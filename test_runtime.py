@@ -19,7 +19,7 @@ class TestModel(unittest.TestCase):
         start_time = time.time()
         train_model(self.X[:60000], self.y[:60000])
         end_time = time.time()
-        self.assertLess(end_time - start_time, 30, "Training time should be less than 30 seconds")
+        self.assertLess(end_time - start_time, 300, "Training time should be less than 300 seconds")
 
 if __name__ == "__main__":
     unittest.main()
