@@ -4,9 +4,6 @@ import unittest
 import numpy as np
 from main_runtime import train_model, download_and_prepare_data
 
-# Alle Ausgaben in die Datei "ausgabe2.txt" umleiten
-sys.stdout = open("ausgabe2.txt", "w")
-
 class TestModel(unittest.TestCase):
 
     @classmethod
@@ -29,7 +26,8 @@ class TestModel(unittest.TestCase):
         self.assertLess(end_time - start_time, 274, "Training time should be less than 274 seconds")
 
 if __name__ == "__main__":
-    unittest.main()
+    # Umleitung der Ausgaben in die Datei "ausgabe2.txt"
+    with open("ausgabe2.txt", "w") as f:
+        sys.stdout = f
+        unittest.main()
 
-# Datei schließen
-sys.stdout.close()
