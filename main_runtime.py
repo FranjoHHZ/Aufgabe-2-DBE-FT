@@ -1,8 +1,13 @@
+import sys
 import time
 import numpy as np
 from sklearn.datasets import fetch_openml
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import classification_report, confusion_matrix
+
+# Alle Ausgaben in die Datei "ausgabe.txt" umleiten
+sys.stdout = open("ausgabe.txt", "w")
 
 # Logger-Decorator
 def my_logger(orig_func):
@@ -40,9 +45,21 @@ def train_model(X, y):
     
     model = LogisticRegression(solver='saga', multi_class='multinomial', max_iter=100, penalty='l2')
     model.fit(X, y)
+    y_pred = model.predict(X)
+    
+    accuracy = np.mean(y_pred == y)
+    print(f"Train Accuracy: {accuracy * 100:.2f}%\n")
+    print("Train confusion matrix:")
+    print(confusion_matrix(y, y_pred))
+    print("\nClassification report for classifier:")
+    print(classification_report(y, y_pred))
+    
     return model
 
 if __name__ == "__main__":
     X, y = download_and_prepare_data()
     model = train_model(X[:60000], y[:60000])
-    print("Training completed.")
+
+# Datei schließen
+sys.stdout.close()
+
