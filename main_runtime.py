@@ -35,7 +35,12 @@ def download_and_prepare_data():
     mnist = fetch_openml('mnist_784', version=1)
     X, y = mnist.data.astype('float32'), mnist.target.astype('int64')
     X /= 255.0
-    return X, y
+
+    # Kleinerer Datensatz: 10.000 Trainings- und 1.000 Testbeispiele
+    X_train, y_train = X[:10000], y[:10000]
+    X_test, y_test = X[10000:11000], y[10000:11000]
+    
+    return (X_train, y_train, X_test, y_test)
 
 @my_logger
 @my_timer
@@ -57,9 +62,10 @@ def train_model(X, y):
     return model
 
 if __name__ == "__main__":
-    X, y = download_and_prepare_data()
-    model = train_model(X[:60000], y[:60000])
+    X_train, y_train, X_test, y_test = download_and_prepare_data()
+    model = train_model(X_train, y_train)
 
 # Datei schließen
 sys.stdout.close()
+
 
